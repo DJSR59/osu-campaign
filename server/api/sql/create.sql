@@ -8,19 +8,10 @@ CREATE TABLE BeatmapInfo(
     map_link varchar(500)
 );
 
-CREATE TABLE Mod(
-    id serial PRIMARY KEY,
-    abbreviation varchar(5)
-);
-
-CREATE TABLE Rank(
-    id serial PRIMARY KEY,
-    rank varchar(10)
-);
-
 CREATE TABLE Challenge(
     id serial PRIMARY KEY,
-    rank_id integer,
+    rank varchar(10)
+    mod varchar(10)
     isCompleted integer,
     CONSTRAINT rank_challenge_link FOREIGN KEY (rank_id) REFERENCES Rank(id)
 );
@@ -49,14 +40,6 @@ CREATE TABLE Node_To_Challenge(
     challenge_level integer,
     CONSTRAINT node_key FOREIGN KEY (node_id) REFERENCES Node(id),
     CONSTRAINT challenge_key FOREIGN KEY (challenge_id) REFERENCES Challenge(id)
-);
-
-CREATE TABLE Challenge_To_Mod(
-    id serial PRIMARY KEY,
-    challenge_id integer,
-    mod_id integer,
-    CONSTRAINT challenge_key FOREIGN KEY (challenge_id) REFERENCES Challenge(id),
-    CONSTRAINT mod_key FOREIGN KEY (mod_id) REFERENCES Mod(id)
 );
 
 CREATE TABLE Node_To_Node(

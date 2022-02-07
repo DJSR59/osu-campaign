@@ -10,17 +10,9 @@ INSERT INTO BeatmapInfo(title, artist, mapper, difficulty_name, star_rating, map
 ('Airman ga Taosenai (SOUND HOLIC Ver.)', 'Hanatan', 'Natsu', 'CRN''s Extra', 6.23, 'https://osu.ppy.sh/beatmapsets/134151#osu/338682'),
 ('Aishite Aishite Aishite', 'Kikuo', 'nyu -', 'Ezreal''s Insane', 4.29, 'https://osu.ppy.sh/beatmapsets/429956#osu/937170');
 
-INSERT INTO Mod(abbreviation) VALUES
-('NM'),
-('HD'),
-('HR'),
-('DT'),
-('FL'),
-('HT');
-
-INSERT INTO Rank(rank) VALUES
-('Pass'),
-('B-Rank'),
-('A-Rank'),
-('FC'),
-('SS');
+INSERT INTO Challenge(rank, mod, isCompleted) VALUES
+('B-Rank', 'NM', false),
+('FC', 'NM', false),
+('FC', 'HD', false),
+('FC', 'HDHR', false),
+('FC', 'HDDT', false);
