@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import BeatmapInfo from './Beatmap.js';
-import {Container, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter, Button, FormGroup, Form, Label, Input} from 'reactstrap';
+import {Container, Row, Col, Modal, ModalHeader, ModalBody, FormGroup, Form, Label, Input} from 'reactstrap';
 
 class Application extends React.Component
 {
@@ -15,8 +15,14 @@ class Application extends React.Component
     };
 
     this.onAddBeatmapChange = this.onAddBeatmapChange.bind(this);
+    this.onAddBeatmapSubmit = this.onAddBeatmapSubmit.bind(this);
 
     this.newBeatmap = new Map();
+    this.resetNewBeatmapMap();
+  }
+
+  resetNewBeatmapMap()
+  {
     this.newBeatmap.set("Title", "");
     this.newBeatmap.set("Artist", "");
     this.newBeatmap.set("Mapper", "");
@@ -34,16 +40,47 @@ class Application extends React.Component
   {
     fetch('/beatmapinfo')
     .then((response) => { return (response.json()); })
-    .then ((jsonOutput) =>{ this.updateData(jsonOutput); })
-    .catch((error) =>
-    {
-      console.log(error);
-    })
+    .then ((jsonOutput) => { this.updateData(jsonOutput); })
+    .catch((error) =>{ console.log(error); });
   }
 
   componentDidMount()
   {
     this.getData();
+  }
+
+  onAddBeatmapChange(event)
+  {
+    this.newBeatmap.set(event.target.id, event.target.value);
+  }
+
+  onAddBeatmapSubmit(event)
+  {
+    fetch("/beatmapinfo", {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=UTF-8" },
+      body: JSON.stringify({
+        title: this.newBeatmap.get("Title"),
+        artist: this.newBeatmap.get("Artist"),
+        mapper: this.newBeatmap.get("Mapper"),
+        diffName: this.newBeatmap.get("Difficulty Name"),
+        starRating: this.newBeatmap.get("Star Rating"),
+        mapLink: this.newBeatmap.get("Map Link"),
+      })
+    })
+    .then(response => response.json())
+    .then(json => console.log(json))
+    .then(() => {
+  	  return (
+  	    fetch("/beatmapinfo")
+  	    .then((response) => {return (response.json())})
+  	    .then ((jsonOutput) => { this.updateData(jsonOutput); })
+      );
+    });
+
+    this.toggleAddBeatmapMenu();
+    event.preventDefault();
+    this.resetNewBeatmapMap();
   }
 
   displayBeatmaps()
@@ -66,11 +103,6 @@ class Application extends React.Component
     }
 
     return beatmaps;
-  }
-
-  onAddBeatmapChange(event)
-  {
-    this.newBeatmap.set(event.target.id, event.target.value);
   }
 
   displayAddBeatmapMenu()
@@ -109,15 +141,21 @@ class Application extends React.Component
           Add a Beatmap
         </ModalHeader>
         <ModalBody>
-        <Form onSubmit={function noRefCheck(){}}>
+        <Form onSubmit={this.onAddBeatmapSubmit}>
           {formGroups}
+          <FormGroup>
+            <button
+              type="submit"
+              children="Add Beatmap"
+            />
+            <button
+              type="button"
+              onClick={() => this.toggleAddBeatmapMenu()}
+              children="Cancel"
+            />
+          </FormGroup>
         </Form>
         </ModalBody>
-        <ModalFooter>
-          <Button onClick={() => this.toggleAddBeatmapMenu()}>
-            Cancel
-          </Button>
-        </ModalFooter>
       </Modal>
     );
   }

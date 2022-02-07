@@ -3,6 +3,10 @@ import yaml
 import os
 
 
+def format_string(text):
+    return '\'%s\'' % text
+
+
 def connect():
     config = {}
     yml_path = os.path.join(os.path.dirname(__file__), '../../config/db.yml')
