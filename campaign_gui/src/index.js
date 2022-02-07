@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import BeatmapInfo from './Beatmap.js';
-import {Container, Row, Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import {Container, Row, Col, Modal, ModalHeader, ModalBody, ModalFooter, Button, FormGroup, Form, Label, Input} from 'reactstrap';
 
 class Application extends React.Component
 {
@@ -11,6 +11,7 @@ class Application extends React.Component
     super(props);
     this.state = {
       BeatmapInfo: ["title", "artist", "mapper", "diff name", 0.0, "map link"],
+      isAddMenuOpen: false,
     };
   }
 
@@ -57,9 +58,67 @@ class Application extends React.Component
     return beatmaps;
   }
 
+  displayAddBeatmapMenu()
+  {
+    let fields = ["Title", "Artist", "Mapper", "Difficulty Name", "Star Rating", "Map Link"];
+    let formGroups = [];
+
+    for (let i = 0; i < fields.length; i++)
+    {
+      formGroups.push(
+        <FormGroup row>
+          <Label
+            for={fields[i]}
+            sm={4}
+          >
+            {fields[i]}
+          </Label>
+          <Col sm={8}>
+            <Input
+              id={fields[i]}
+              name={fields[i]}
+              placeholder={fields[i]}
+              type="text"
+              onChange={function noRefCheck(){}}
+            />
+          </Col>
+        </FormGroup>
+      );
+    }
+
+    return(
+      <Modal
+        isOpen={this.state.isAddMenuOpen}
+      >
+        <ModalHeader>
+          Add a Beatmap
+        </ModalHeader>
+        <ModalBody>
+        <Form onSubmit={function noRefCheck(){}}>
+          {formGroups}
+        </Form>
+        </ModalBody>
+        <ModalFooter>
+          <Button onClick={() => this.toggleAddBeatmapMenu()}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
+    );
+  }
+
+  toggleAddBeatmapMenu()
+  {
+    if (this.state.isAddMenuOpen === false)
+      this.setState({isAddMenuOpen: true});
+    else
+      this.setState({isAddMenuOpen: false});
+  }
+
   render()
   {
     let beatmaps = this.displayBeatmaps();
+    let addMenu = this.displayAddBeatmapMenu();
 
     return (
       <div>
@@ -72,6 +131,12 @@ class Application extends React.Component
               A collection of songs that will make you on your way to become an osu! champion!
             </h3>
           </Row>
+          <button
+            onClick={() => this.toggleAddBeatmapMenu()}
+          >
+            Add Beatmap
+          </button>
+          {addMenu}
           {beatmaps}
         </Container>
       </div>
