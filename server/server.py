@@ -8,6 +8,7 @@ app = Flask(__name__)  # create Flask instance
 api = Api(app)  # api router
 
 api.add_resource(BeatmapInfoApi, '/beatmapinfo')
+api.add_resource(BeatmapInfoDataApi, '/beatmapinfo/<int:id>')
 
 if __name__ == '__main__':
     print("Loading db")

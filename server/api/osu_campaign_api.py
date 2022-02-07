@@ -29,3 +29,9 @@ class BeatmapInfoApi(Resource):
 
         query = insert_sql("BeatmapInfo", columns, values)
         exec_commit(query)
+
+
+class BeatmapInfoDataApi(Resource):
+    def delete(self, id):
+        exec_commit(delete_sql('BeatmapInfo') + where_sql("id", id))
+

@@ -69,7 +69,7 @@ class Application extends React.Component
       })
     })
     .then(response => response.json())
-    .then(json => console.log(json))
+    .then(() => console.log("Beatmap has been added"))
     .then(() => {
   	  return (
   	    fetch("/beatmapinfo")
@@ -98,6 +98,7 @@ class Application extends React.Component
           diffName = {this.state.BeatmapInfo[i][4]}
           starRating = {this.state.BeatmapInfo[i][5]}
           mapLink = {this.state.BeatmapInfo[i][6]}
+          updateData = {(apiResponse) => this.updateData(apiResponse)}
         />
       )
     }

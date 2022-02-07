@@ -12,6 +12,22 @@ export default class BeatmapInfo extends React.Component
     }
   }
 
+  deleteBeatmap()
+  {
+    fetch("/beatmapinfo/" + this.props.id, { method: "DELETE" })
+    .then(response => response.json())
+    .then(() => console.log("Beatmap has been deleted"))
+    .then(() => {
+  	  return (
+	      fetch('/beatmapinfo')
+	      .then((response) => {return (response.json())})
+	      .then ((jsonOutput) =>{ this.props.updateData(jsonOutput); })
+      );
+    });
+
+    this.toggleDeleteBeatmapMenu();
+  }
+
   displayDeleteBeatmapMenu()
   {
     return(
@@ -23,7 +39,7 @@ export default class BeatmapInfo extends React.Component
         </ModalHeader>
         <ModalBody>
           <button
-            onClick={function noRefCheck(){}}
+            onClick={() => this.deleteBeatmap()}
             children="Delete"
           />
           <button
