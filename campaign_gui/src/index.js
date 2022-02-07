@@ -13,6 +13,16 @@ class Application extends React.Component
       BeatmapInfo: ["title", "artist", "mapper", "diff name", 0.0, "map link"],
       isAddMenuOpen: false,
     };
+
+    this.onAddBeatmapChange = this.onAddBeatmapChange.bind(this);
+
+    this.newBeatmap = new Map();
+    this.newBeatmap.set("Title", "");
+    this.newBeatmap.set("Artist", "");
+    this.newBeatmap.set("Mapper", "");
+    this.newBeatmap.set("Difficulty Name", "");
+    this.newBeatmap.set("Star Rating", "");
+    this.newBeatmap.set("Map Link", "");
   }
 
   updateData(apiResponse)
@@ -58,6 +68,11 @@ class Application extends React.Component
     return beatmaps;
   }
 
+  onAddBeatmapChange(event)
+  {
+    this.newBeatmap.set(event.target.id, event.target.value);
+  }
+
   displayAddBeatmapMenu()
   {
     let fields = ["Title", "Artist", "Mapper", "Difficulty Name", "Star Rating", "Map Link"];
@@ -79,7 +94,7 @@ class Application extends React.Component
               name={fields[i]}
               placeholder={fields[i]}
               type="text"
-              onChange={function noRefCheck(){}}
+              onChange={this.onAddBeatmapChange}
             />
           </Col>
         </FormGroup>
