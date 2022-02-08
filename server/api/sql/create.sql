@@ -10,10 +10,9 @@ CREATE TABLE BeatmapInfo(
 
 CREATE TABLE Challenge(
     id serial PRIMARY KEY,
-    rank varchar(10)
-    mod varchar(10)
-    isCompleted integer,
-    CONSTRAINT rank_challenge_link FOREIGN KEY (rank_id) REFERENCES Rank(id)
+    rank varchar(10),
+    mod varchar(10),
+    isCompleted integer
 );
 
 CREATE TABLE MasterChallenge(
@@ -28,7 +27,7 @@ CREATE TABLE Node(
     id serial PRIMARY KEY,
     beatmap_info_id integer,
     master_challenge_id integer,
-    isLocked integer,
+    isUnlocked integer,
     CONSTRAINT beatmap_node_link FOREIGN KEY (beatmap_info_id) REFERENCES BeatmapInfo(id),
     CONSTRAINT master_challenge_node_link FOREIGN KEY (master_challenge_id) REFERENCES MasterChallenge(id)
 );

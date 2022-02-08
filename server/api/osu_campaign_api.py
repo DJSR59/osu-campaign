@@ -9,8 +9,7 @@ from .sql_commands import *
 
 class BeatmapInfoApi(Resource):
     def get(self):
-        result = exec_get_all(select_sql("BeatmapInfo", "*"))
-        return result
+        return exec_get_all(select_sql("BeatmapInfo", "*") + inner_join_sql('BeatmapInfo', 'Node', 'id', 'beatmap_info_id'))
 
     def post(self):
         parser = reqparse.RequestParser()
@@ -33,5 +32,22 @@ class BeatmapInfoApi(Resource):
 
 class BeatmapInfoDataApi(Resource):
     def delete(self, id):
-        exec_commit(delete_sql('BeatmapInfo') + where_sql("id", id))
+        exec_commit(delete_sql('MasterChallenge') + where_sql('beatmap_info_id', id))
+        exec_commit(delete_sql('Node') + where_sql('beatmap_info_id', id))
+        exec_commit(delete_sql('BeatmapInfo') + where_sql('id', id))
 
+
+class ChallengeDataApi(Resource):
+    def get(self, id):
+        columns = ['c_normal.rank', 'c_normal.mod', 'c_master.rank', 'c_master.mod']
+
+        query = select_sql('Challenge c_normal', columns)
+        query += inner_join_sql('c_normal', 'Node_To_Challenge ntc', 'id', 'challenge_id')
+        query += inner_join_sql('ntc', 'Node node', 'node_id', 'id')
+        query += inner_join_sql('node', 'BeatmapInfo beatmapinfo', 'beatmap_info_id', 'id')
+        query += inner_join_sql('node', 'MasterChallenge masterinfo', 'master_challenge_id', 'id')
+        query += inner_join_sql('masterinfo', 'BeatmapInfo master_beatmapinfo', 'beatmap_info_id', 'id')
+        query += inner_join_sql('masterinfo', 'Challenge c_master', 'challenge_id', 'id')
+        query += where_sql('beatmapinfo.id', id)
+
+        return exec_get_all(query)

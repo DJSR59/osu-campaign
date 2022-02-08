@@ -1,4 +1,5 @@
 INSERT INTO BeatmapInfo(title, artist, mapper, difficulty_name, star_rating, map_link) VALUES
+('(can you) understand me?', 'Komiya Mao', 'Sotarks', 'uhh?', 5.06, 'https://osu.ppy.sh/beatmapsets/456986#osu/979155'),
 ('(can you) understand me?', 'Komiya Mao', 'Okoratu', 'huh?', 5.38, 'https://osu.ppy.sh/beatmapsets/409898#osu/889634'),
 ('2004 Breakup', 'The Gentle Men', 'Mimari', '2004', 4.82, 'https://osu.ppy.sh/beatmapsets/1275814#osu/2650781'),
 ('A FOOL MOON NIGHT', 'The Koxx', 'Astar', 'Piggey''s Destruction', 9.47, 'https://osu.ppy.sh/beatmapsets/524026#osu/1186901'),
@@ -11,8 +12,22 @@ INSERT INTO BeatmapInfo(title, artist, mapper, difficulty_name, star_rating, map
 ('Aishite Aishite Aishite', 'Kikuo', 'nyu -', 'Ezreal''s Insane', 4.29, 'https://osu.ppy.sh/beatmapsets/429956#osu/937170');
 
 INSERT INTO Challenge(rank, mod, isCompleted) VALUES
-('B-Rank', 'NM', false),
-('FC', 'NM', false),
-('FC', 'HD', false),
-('FC', 'HDHR', false),
-('FC', 'HDDT', false);
+('B-Rank', 'NM', 0),
+('FC', 'NM', 0),
+('FC', 'HD', 0),
+('FC', 'DT', 0),
+('FC', 'HDDTHR', 0),
+('FC', 'HDDT', 0);
+
+INSERT INTO MasterChallenge(beatmap_info_id, challenge_id) VALUES
+(2, 6);
+
+INSERT INTO Node(beatmap_info_id, master_challenge_id, isUnlocked) VALUES
+(1, 1, 0);
+
+INSERT INTO Node_To_Challenge(node_id, challenge_id, challenge_level) VALUES
+(1, 1, 1),
+(1, 2, 2),
+(1, 3, 3),
+(1, 4, 4),
+(1, 5, 5);

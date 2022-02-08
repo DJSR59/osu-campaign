@@ -1,5 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
+import Challenge from './Challenge.js';
 import {Row, Col, Modal, ModalBody, ModalHeader} from 'reactstrap';
 
 export default class BeatmapInfo extends React.Component
@@ -9,6 +10,13 @@ export default class BeatmapInfo extends React.Component
     super(props);
     this.state = {
       isDeleteMenuOpen: false,
+      challengeInfo: [
+        [""], [""], [""], [""],
+        [""], [""], [""], [""],
+        [""], [""], [""], [""],
+        [""], [""], [""], [""],
+        [""], [""], [""], [""],
+      ]
     }
   }
 
@@ -59,9 +67,55 @@ export default class BeatmapInfo extends React.Component
       this.setState({isDeleteMenuOpen: false});
   }
 
+  updateData(apiResponse)
+  {
+    this.setState({challengeInfo: apiResponse})
+  }
+
+  getChallenges()
+  {
+    fetch('/challenges/' + this.props.id)
+    .then((response) => { return (response.json()); })
+    .then ((jsonOutput) => { this.updateData(jsonOutput); })
+    .catch((error) =>{ console.log(error); });
+  }
+
+  displayChallenges()
+  {
+    let challenges = []
+
+    for (let i = 0; i < 5; i++)
+    {
+      challenges.push(
+        <Row>
+          <Col>
+            {this.state.challengeInfo[i][0]}
+          </Col>
+          <Col>
+            {this.state.challengeInfo[i][1]}
+          </Col>
+        </Row>
+      );
+    }
+
+    challenges.push(
+      <Row>
+        <Col>
+          {this.state.challengeInfo[0][2]}
+        </Col>
+        <Col>
+          {this.state.challengeInfo[0][3]}
+        </Col>
+      </Row>
+    )
+
+    return challenges;
+  }
+
   render()
   {
     let deleteMenu = this.displayDeleteBeatmapMenu();
+    let challenges = this.displayChallenges();
 
     return (
       <div>
@@ -87,12 +141,20 @@ export default class BeatmapInfo extends React.Component
             <Col>
               <button
                 className="button"
+                onClick={() => this.getChallenges()}
+                children="Challenge"
+              />
+            </Col>
+            <Col>
+              <button
+                className="button"
                 onClick={() => this.toggleDeleteBeatmapMenu()}
                 children="Delete"
               />
               {deleteMenu}
             </Col>
           </Row>
+          {challenges}
       </div>
     )
   }
