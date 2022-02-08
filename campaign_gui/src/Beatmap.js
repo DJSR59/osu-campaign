@@ -89,6 +89,9 @@ export default class BeatmapInfo extends React.Component
       challenges.push(
         <Row>
           <Col>
+            Level {i + 1}:
+          </Col>
+          <Col>
             {this.state.challengeInfo[i][0]}
           </Col>
           <Col>
@@ -100,6 +103,9 @@ export default class BeatmapInfo extends React.Component
 
     challenges.push(
       <Row>
+        <Col>
+          Master Challenge:
+        </Col>
         <Col>
           {this.state.challengeInfo[0][2]}
         </Col>
