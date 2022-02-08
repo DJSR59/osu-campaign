@@ -124,6 +124,15 @@ def update_sql(table, columns, values):
     return update_query
 
 
+def delete_sql(table):
+    """
+        Constructs DELETE query additions for the system to use.
+        :param table: The table to update information in.
+        :return: The constructed DELETE query.
+        """
+    return 'DELETE FROM %s' % table
+
+
 def where_sql(column, value, continuation=False, equality='='):
     """
     Constructs WHERE query additions for the system to use.

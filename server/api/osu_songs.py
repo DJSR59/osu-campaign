@@ -10,10 +10,6 @@ def wipe_tables():
     exec_sql_file("sql/create.sql")
 
 
-def format_string(text):
-    return '\'%s\'' % text
-
-
 def get_all_info():
     return exec_get_all("SELECT * FROM BeatmapInfo")
 
